@@ -7,8 +7,8 @@
  */
 include_once("assests/common/dbconnection.php");
 include_once("assests/common/basic_support.php");
-include_once("assests/common/classes/User.php");
-$sideBar = authenticate($dbh,array("1","0","2"),$_SERVER['REQUEST_URI']);
+include_once("assests/common/classes/Person.php");
+$sideBar = authenticate($dbh,array(1,2,3),$_SERVER['REQUEST_URI']);
 $user = unserialize($_SESSION["user"]);
 ?>
 <!DOCTYPE html>
@@ -60,7 +60,7 @@ $user = unserialize($_SESSION["user"]);
           <div class="user-panel">
             <div class="pull-left image"><img class="img-circle" src="images/home_user_white.png" alt="User Image"></div>
             <div class="pull-left info">
-              <p><?php echo $user->getFirstName()." ".$user->getLastName(); ?></p>
+              <p><?php echo $user->getName(); ?></p>
             </div>
           </div>
           <!-- Sidebar Menu-->

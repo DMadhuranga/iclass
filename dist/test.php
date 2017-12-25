@@ -5,6 +5,7 @@
  * Date: 12/21/2017
  * Time: 9:59 AM
  */
+echo md5("officer1@123");
 ?>
 <html>
 <head>

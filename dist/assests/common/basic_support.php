@@ -6,7 +6,7 @@
  * Time: 12:57 PM
  */
 include_once("dbconnection.php");
-include_once("classes/User.php");
+include_once("classes/Person.php");
 if(!isset($_SESSION)){
     session_start();
 }
@@ -84,7 +84,7 @@ function getSideBar($dbh,$role_number,$page_url){
 
 function checkLoginDataGet($dbh,$user_name,$password){
     if ($dbh) {
-        $sql = $dbh->prepare("select user_name,role_id from user where ((user_name=? OR email=?) AND password=?) and deleted=0");
+        $sql = $dbh->prepare("select user_name,role_id from person where ((user_name=? OR email=?) AND password=?) and deleted=0");
         $sql->execute(array($user_name,$user_name, $password));
         if ($sql) {
             $result = $sql->fetchAll();
@@ -103,20 +103,25 @@ function checkLoginDataGet($dbh,$user_name,$password){
 
 function getUser($dbh,$user_name,$password){
     if ($dbh) {
-        $sql = $dbh->prepare("select user_id,user_name,email,role_id,first_name,last_name,national_id,password from user where ((user_name=? OR email=?) AND password=?) and deleted=0");
+        $sql = $dbh->prepare("select id,name,full_name,national_id,email,notes,password,user_name,sex,registered_date,date_of_birth,address,role_id from person where ((user_name=? OR email=?) AND password=?) and deleted=0");
         $sql->execute(array($user_name,$user_name, $password));
         if ($sql) {
             $result = $sql->fetchAll();
             if(sizeof($result)>0){
-                $temp_users = new User();
+                $temp_users = new Person();
                 $temp_users->setEmail($result[0]["email"]);
-                $temp_users->setFirstName($result[0]["first_name"]);
-                $temp_users->setLastName($result[0]["last_name"]);
+                $temp_users->setName($result[0]["name"]);
+                $temp_users->setFullName($result[0]["full_name"]);
                 $temp_users->setNationalId($result[0]["national_id"]);
                 $temp_users->setPassword($result[0]["password"]);
                 $temp_users->setRoleId($result[0]["role_id"]);
-                $temp_users->setUserId($result[0]["user_id"]);
+                $temp_users->setId($result[0]["id"]);
                 $temp_users->setUserName($result[0]["user_name"]);
+                $temp_users->setNotes($result[0]["notes"]);
+                $temp_users->setSex($result[0]["sex"]);
+                $temp_users->setRegisteredDate($result[0]["registered_date"]);
+                $temp_users->setDateOfBirth($result[0]["date_of_birth"]);
+                $temp_users->setAddress($result[0]["address"]);
                 return $temp_users;
             }
         }else{
